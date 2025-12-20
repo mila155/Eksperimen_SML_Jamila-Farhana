@@ -1,31 +1,30 @@
+import os
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import RobustScaler
-import os
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, ".."))
 
 
 def load_data(input_path: str) -> pd.DataFrame:
-    df = pd.read_csv(input_path)
-    return df
+    return pd.read_csv(input_path)
 
 
 def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
-    # drop id
     if 'id' in df.columns:
         df = df.drop(columns=['id'])
 
-    # encode target variable
     df['diagnosis'] = df['diagnosis'].map({'M': 1, 'B': 0})
 
-    # separate features and target
     X = df.drop(columns=['diagnosis'])
     y = df['diagnosis']
 
-    # scaling (RobustScaler)
     scaler = RobustScaler()
     X_scaled = scaler.fit_transform(X)
-    X_scaled_df = pd.DataFrame(X_scaled, columns=X.columns)
 
+    X_scaled_df = pd.DataFrame(X_scaled, columns=X.columns)
     processed_df = pd.concat([X_scaled_df, y.reset_index(drop=True)], axis=1)
 
     return processed_df
@@ -36,10 +35,10 @@ def save_processed_data(df: pd.DataFrame, output_path: str):
     df.to_csv(output_path, index=False)
 
 
-def run_pipeline(
-    input_path="../breast-cancer_raw.csv",
-    output_path="../preprocessing/breast-cancer_processed.csv"
-):
+def run_pipeline():
+    input_path = os.path.join(ROOT_DIR, "breast-cancer_raw.csv")
+    output_path = os.path.join(BASE_DIR, "breast-cancer_processed.csv")
+
     df = load_data(input_path)
     processed_df = preprocess_data(df)
     save_processed_data(processed_df, output_path)
