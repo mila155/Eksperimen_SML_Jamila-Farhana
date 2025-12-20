@@ -37,8 +37,8 @@ def save_processed_data(df: pd.DataFrame, output_path: str):
 
 
 def run_pipeline(
-    input_path="preprocessing/breast-cancer_raw.csv",
-    output_path="preprocessing/breast-cancer_processed.csv"
+    input_path="../breast-cancer_raw.csv",
+    output_path="../preprocessing/breast-cancer_processed.csv"
 ):
     df = load_data(input_path)
     processed_df = preprocess_data(df)
