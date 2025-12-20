@@ -28,12 +28,12 @@ jobs:
 
     - name: Run preprocessing pipeline
       run: |
-        python automate_Jamila_Farhana.py
+        python preprocessing/automate_jamila_farhana.py
 
     - name: Commit processed dataset
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
-        git add data/processed/breast-cancer_processed.csv
+        git add preprocessing/breast-cancer_processed.csv
         git commit -m "Update processed dataset (automated preprocessing)" || echo "No changes to commit"
         git push
